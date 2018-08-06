@@ -24,6 +24,7 @@ public class StopWatch
 	public static void main(String args[]) 
 	{
 		setTime();
+		//Test
 	}
 	
 	public static void setTime() 
