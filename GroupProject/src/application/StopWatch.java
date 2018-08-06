@@ -14,9 +14,22 @@ package application;
 
 import java.sql.Time;
 
-public class StopWatch {
+public class StopWatch 
+{
 	private Time timeTotal; 
 	private Time timeStart;
 	private Time timeStop;
 	private Time timePause;
+	
+	public static void main(String args[]) 
+	{
+		setTime();
+	}
+	
+	public static void setTime() 
+	{
+		long startTime = System.currentTimeMillis();
+		
+		System.out.println(startTime);
+	}
 }
