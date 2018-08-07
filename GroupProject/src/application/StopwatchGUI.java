@@ -1,6 +1,9 @@
 package application;
 
 import java.awt.BorderLayout;
+import java.sql.Time;
+import java.util.Timer; 
+import java.util.TimerTask;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -18,6 +21,9 @@ import javax.swing.BorderFactory;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JTextField;
@@ -31,6 +37,9 @@ public class StopwatchGUI extends JFrame {
 	private JPanel contentPane;
 	private final Action action = new SwingAction();
 	private final Action action_1 = new SwingAction_1();
+	
+	double secondsPassed = 0;	
+	boolean running = true;
 
 	/**
 	 * Launch the application.
@@ -69,6 +78,8 @@ public class StopwatchGUI extends JFrame {
 		
 		JButton btnStopwatch = new JButton("Stopwatch");
 		menuBar.add(btnStopwatch);
+		btnStopwatch.setEnabled(false);
+		
 		
 		JButton btnTimeScheme = new JButton("Time Scheme");
 		menuBar.add(btnTimeScheme);
@@ -77,22 +88,73 @@ public class StopwatchGUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnStop = new JButton("Stop");
-		btnStop.setBounds(172, 181, 89, 23);
-		contentPane.add(btnStop);
+
 		
 		JButton btnPause = new JButton("Pause");
+		btnPause.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) 
+			{
+				running = false;
+			}
+		});
+		
+		JTextPane timeText = new JTextPane();
+		timeText.setText(Double.toString(secondsPassed));
+		timeText.setBounds(188, 56, 47, 20);
+		contentPane.add(timeText);
+		
 		btnPause.setBounds(172, 147, 89, 23);
 		contentPane.add(btnPause);
 		
 		JButton btnStart = new JButton("Start");
+		btnStart.addMouseListener(new MouseAdapter() 
+		{
+			@Override
+			public void mouseClicked(MouseEvent arg0) 
+			{				
+				Timer myTimer = new Timer("StopWatchTime");
+				
+				TimerTask task = new TimerTask()
+				{
+					public void run() 
+					{
+						if(running == false)
+						{
+							btnStart.setEnabled(true);
+							myTimer.cancel();
+							running = true;
+						}
+						else
+						{
+							btnStart.setEnabled(false);
+							//System.out.println(running);
+							secondsPassed++;
+							timeText.setText(Double.toString(secondsPassed / 10));							
+							System.out.println(secondsPassed / 10 );	
+						}
+					}
+				};	
+				myTimer.scheduleAtFixedRate(task, 100, 100);
+			}
+		});
 		btnStart.setBounds(172, 113, 89, 23);
 		contentPane.add(btnStart);
 		
-		JTextPane textPane = new JTextPane();
-		textPane.setText("00:00:00");
-		textPane.setBounds(189, 59, 56, 20);
-		contentPane.add(textPane);
+		JButton btnStop = new JButton("Stop");
+		btnStop.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) 
+			{
+				running = false;
+				secondsPassed = 0;
+				timeText.setText(Double.toString(secondsPassed / 10));			
+			}
+		});
+		btnStop.setBounds(172, 181, 89, 23);
+		contentPane.add(btnStop);
+		
+
 		
 		JTextPane txtpnNotes = new JTextPane();
 		txtpnNotes.setText("Notes:");
@@ -101,7 +163,7 @@ public class StopwatchGUI extends JFrame {
 		
 		JTextPane txtpnStopwatch = new JTextPane();
 		txtpnStopwatch.setText("Stopwatch");
-		txtpnStopwatch.setBounds(188, 11, 56, 20);
+		txtpnStopwatch.setBounds(188, 11, 73, 20);
 		contentPane.add(txtpnStopwatch);
 		
 		String[] petStrings = { "Task1", "Task2", "Task3", "Task4", "Task5" };
@@ -118,10 +180,14 @@ public class StopwatchGUI extends JFrame {
 		
 		JTextArea txtrTest = new JTextArea();
 		txtrTest.setText("Test");
-		txtrTest.setBounds(289, 35, 162, 190);
+		txtrTest.setBounds(289, 35, 162, 161);
 		contentPane.add(txtrTest);
 
 		txtrTest.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		JButton btnSave = new JButton("Save");
+		btnSave.setBounds(331, 202, 70, 23);
+		contentPane.add(btnSave);
 	}
 
 	private class SwingAction extends AbstractAction {
