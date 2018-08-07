@@ -41,9 +41,7 @@ public class StopwatchGUI extends JFrame {
 	double secondsPassed = 0;	
 	boolean running = true;
 
-	/**
-	 * Launch the application.
-	 */
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
