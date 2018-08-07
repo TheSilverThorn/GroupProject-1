@@ -57,9 +57,7 @@ public class StopwatchGUI extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
+
 	public StopwatchGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 477, 300);
